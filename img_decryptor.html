@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Decryptor</title>
+</head>
+<body>
+    <h1>Image Decryptor</h1>
+    <p>Виберіть зашифрований файл, і програма спробує його дешифрувати:</p>
+    <input type="file" id="file-input" accept="*" />
+    <canvas id="image-canvas" style="display: none;"></canvas>
+    <img id="output-image" alt="Decrypted Image" style="max-width: 100%; display: none;" />
+
+    <script>
+        document.getElementById('file-input').addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                alert('Будь ласка, виберіть файл.');
+                return;
+            }
+
+            try {
+                // Читання файлу як двійкових даних
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const arrayBuffer = reader.result;
+
+                    // Якщо потрібна обробка/дешифрування - додайте тут ваш алгоритм
+                    const decryptedData = decryptData(arrayBuffer);
+
+                    // Відображення результату, якщо це зображення
+                    const blob = new Blob([decryptedData], { type: 'image/png' });
+                    const url = URL.createObjectURL(blob);
+
+                    const outputImage = document.getElementById('output-image');
+                    outputImage.src = url;
+                    outputImage.style.display = 'block';
+                };
+
+                reader.readAsArrayBuffer(file);
+            } catch (error) {
+                console.error('Помилка обробки файлу:', error);
+                alert('Не вдалося дешифрувати файл.');
+            }
+        });
+
+        // Зразок функції для дешифрування (замініть це на ваш метод)
+        function decryptData(data) {
+            // Простий приклад: повертаємо дані без змін (замініть на власну логіку)
+            return data;
+        }
+    </script>
+</body>
+</html>
